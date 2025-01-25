@@ -1,0 +1,12 @@
+# ninja log v6
+1	16	1737818386881260896	build.ninja	2c64a55cedfa2740
+1	374	1737818352584069559	CMakeFiles/reading_uart_c.dir/src/main.cpp.o	b71207a26158c405
+1	433	1737818352584069559	CMakeFiles/reading_uart_c.dir/src/readUART.cpp.o	7620017d621dfc2
+433	483	1737818124318067344	reading_uart_c	ceb14ea4fdc5f08e
+1	393	1737818475698963197	CMakeFiles/reading_uart_c.dir/src/main.cpp.o	b71207a26158c405
+1	455	1737818475698963197	CMakeFiles/reading_uart_c.dir/src/readUART.cpp.o	7620017d621dfc2
+1	377	1737818597588927151	CMakeFiles/reading_uart_c.dir/src/main.cpp.o	b71207a26158c405
+1	433	1737818605622846583	CMakeFiles/reading_uart_c.dir/src/readUART.cpp.o	7620017d621dfc2
+433	480	1737818606054789998	reading_uart_c	ceb14ea4fdc5f08e
+2	335	1737818639756940295	CMakeFiles/reading_uart_c.dir/src/main.cpp.o	b71207a26158c405
+336	384	1737818640090971851	reading_uart_c	ceb14ea4fdc5f08e

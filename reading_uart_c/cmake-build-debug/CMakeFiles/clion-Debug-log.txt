@@ -1,0 +1,4 @@
+/snap/clion/314/bin/cmake/linux/x64/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/snap/clion/314/bin/ninja/linux/x64/ninja -G Ninja -S /home/michal/Documents/Programowanie/robot_manipulator/reading_uart_c -B /home/michal/Documents/Programowanie/robot_manipulator/reading_uart_c/cmake-build-debug
+-- Configuring done (0.0s)
+-- Generating done (0.0s)
+-- Build files have been written to: /home/michal/Documents/Programowanie/robot_manipulator/reading_uart_c/cmake-build-debug
