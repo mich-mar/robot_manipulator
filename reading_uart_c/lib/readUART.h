@@ -1,22 +1,22 @@
-#include <iostream>
-#include <vector>
-#include <string>
-#include <cstdio>
-#include <memory>
-#include <fcntl.h>
-#include <termios.h>
-#include <unistd.h>
-#include <cstring>
+#include "virables.h"
 
 #ifndef READUART_H
 #define READUART_H
 
-namespace readUART {
-    inline int baudRate = 9600;
+struct inputData {
+    int input_1;
+    int input_2;
+    int input_3;
+};
 
+namespace readUART {
     int configureUART(const char *portName);
+
     std::string readFromUART(int uartFD);
+
     std::vector<std::string> findUARTPorts();
+
+    inputData getInputData(const std::string &input);
 }
 
 #endif //READUART_H

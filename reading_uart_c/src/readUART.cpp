@@ -5,15 +5,15 @@ int readUART::configureUART(const char *portName) {
 
     if (uartFD == -1) {
         std::cerr << "Nie udało się otworzyć portu UART: " << portName << std::endl;
-        return -1;
+        exit(-1); // Nie udało się skonfigurować UART
     }
 
     struct termios options;
     tcgetattr(uartFD, &options);
 
     // Ustawienie prędkości transmisji
-    cfsetispeed(&options, baudRate);
-    cfsetospeed(&options, baudRate);
+    cfsetispeed(&options, virables::baudRate);
+    cfsetospeed(&options, virables::baudRate);
 
     // Konfiguracja: 8N1 (8 bitów danych, brak parzystości, 1 bit stopu)
     options.c_cflag &= ~PARENB; // Bez parzystości
@@ -44,6 +44,7 @@ std::string readUART::readFromUART(int uartFD) {
 
     // Odczyt danych do tymczasowego bufora
     int bytesRead = read(uartFD, tempBuffer, sizeof(tempBuffer) - 1);
+
     if (bytesRead < 0) {
         //std::cerr << "Błąd odczytu z UART: " << strerror(errno) << std::endl;
         return "";
@@ -73,15 +74,13 @@ std::string readUART::readFromUART(int uartFD) {
 
 // Funkcja do wyszukiwania dostępnych portów UART
 std::vector<std::string> readUART::findUARTPorts() {
-    const std::string &command = "ls /dev/ttyACM*";
-
     std::vector<std::string> ports;
     char buffer[128];
 
     // Uruchomienie komendy systemowej za pomocą popen
-    std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(command.c_str(), "r"), pclose);
+    std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(virables::command.c_str(), "r"), pclose);
     if (!pipe) {
-        std::cerr << "Nie udało się wykonać komendy: " << command << std::endl;
+        std::cerr << "Nie udało się wykonać komendy: " << virables::command << std::endl;
         return ports;
     }
 
@@ -92,7 +91,49 @@ std::vector<std::string> readUART::findUARTPorts() {
         ports.push_back(port);
     }
 
-    std::cout << ports.at(0) << std::endl;
+    if (ports.empty()) {
+        std::cout << "Nie znaleziono żadnych portów UART." << std::endl;
+        exit(1);
+    } else {
+        std::cout << "Znaleziono następujące porty UART:" << std::endl;
+        for (const auto &port: ports) {
+            std::cout << " - " << port << std::endl;
+        }
+    }
 
     return ports;
+}
+
+inputData readUART::getInputData(const std::string &input) {
+    inputData result;
+    std::stringstream ss(input);
+    std::string temp;
+    char delimiter = ';';
+
+    try {
+        // Odczytaj pierwszą wartość
+        if (std::getline(ss, temp, delimiter)) {
+            result.input_1 = std::stoi(temp);
+        } else {
+            throw std::runtime_error("Brak pierwszej wartości w danych wejściowych.");
+        }
+
+        // Odczytaj drugą wartość
+        if (std::getline(ss, temp, delimiter)) {
+            result.input_2 = std::stoi(temp);
+        } else {
+            throw std::runtime_error("Brak drugiej wartości w danych wejściowych.");
+        }
+
+        // Odczytaj trzecią wartość (do końca linii)
+        if (std::getline(ss, temp)) {
+            result.input_3 = std::stoi(temp);
+        } else {
+            throw std::runtime_error("Brak trzeciej wartości w danych wejściowych.");
+        }
+    } catch (const std::invalid_argument &e) {
+    } catch (const std::out_of_range &e) {
+    }
+
+    return result;
 }
